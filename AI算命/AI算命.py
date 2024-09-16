@@ -20,11 +20,11 @@ static_bp = Blueprint('static', __name__, static_folder='static')
 # 定义一个字典存储不同模型对应的API_KEY和base_url
 MODEL_CONFIG = {
     "glm-4": {
-        "api_key": "fa1a088d1a58296fc1eaaf5d08ce4dd2.pwsQ4HfEK1Ee3lv7",
+        "api_key": "YOUR_API_key",
         "base_url": "https://open.bigmodel.cn/api/paas/v4/"
     },
     "abab6.5s-chat": {
-        "api_key": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJHcm91cE5hbWUiOiLolKHlub_nj4oiLCJVc2VyTmFtZSI6IuiUoeW5v-ePiiIsIkFjY291bnQiOiIiLCJTdWJqZWN0SUQiOiIxODEwNTMwOTYxMjcyNjA3NDgzIiwiUGhvbmUiOiIxMzEyMjQxMDE3NiIsIkdyb3VwSUQiOiIxODEwNTMwOTYxMjY4NDEzMTE0IiwiUGFnZU5hbWUiOiIiLCJNYWlsIjoiIiwiQ3JlYXRlVGltZSI6IjIwMjQtMDgtMTMgMTQ6NTc6MDAiLCJpc3MiOiJtaW5pbWF4In0.cOfEbuVSAgSngxT5z2cSSYmSYXfK9lUrQMUYHZbUx-rEhFbWxbRIg_M_sTVJANZc6gjYiSyxqiwrCA00BNO6omGluHtjDoI9EP6VC6ZD7DlXFscspd5gL65p6rMj-FnokHeRpfevm9F9ASyISeOkhNzxaFQeWJVOQLRzRF1mGMY2C2Ojp5cPm0ZRqAe3MU3sqFP6ZC0RgBymARhw4GXvrQs0H1g7n2XIxcFZjmQ6s5vonKYLUXhi-PvDznCc3I61ngqjfXkAU7b3asGfNRuR69GjJH48B0bChpEiz09fqNcYgA-LLjVQFQdlLuyTI9OQo2Bu5phONW7IWKNwAaDR1w",
+        "api_key": "YOUR_API_key",
         "base_url": "https://api.minimax.chat/v1"
     }
 }
