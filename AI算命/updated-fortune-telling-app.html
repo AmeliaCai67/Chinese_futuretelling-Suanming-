@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>算命应用</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: "SimSun", "STSong", serif;
+            color: #d4af37;
+            background-color: #000;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background-image: url("C:\Users\Amelia\Desktop\24实习\AI算命\baguazhen.jpg"); /* 插入背景图片 */
+            background-size: cover;
+            background-position: center;
+        }
+        .index-page {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+        .fortune-wheel {
+            width: 300px;
+            height: 300px;
+            margin-bottom: 20px;
+        }
+        .start-button {
+            padding: 10px 20px;
+            font-size: 24px;
+            background-color: #d4af37;
+            color: #000;
+            border: none;
+            cursor: pointer;
+        }
+        .chat-page {
+            display: none;
+            height: 100%;
+        }
+        .chat-container {
+            display: flex;
+            height: 100%;
+        }
+        .sidebar {
+            width: 200px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+        .chat-history {
+            flex-grow: 1;
+            overflow-y: auto;
+            border: 1px solid #d4af37;
+            margin-bottom: 20px;
+            padding: 10px;
+        }
+        .chat-input {
+            display: flex;
+        }
+        .chat-input input {
+            flex-grow: 1;
+            padding: 10px;
+        }
+        .chat-input button {
+            padding: 10px 20px;
+            background-color: #d4af37;
+            color: #1F1F1F;
+            border: none;
+            cursor: pointer;
+        }
+        .sidebar-button {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: transparent;
+            color: #d4af37;
+            border: 1px solid #e1c465;
+            cursor: pointer;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="index-page" id="indexPage">
+            <img src="/static/baguazhen.jpg" alt="Fortune Wheel" class="fortune-wheel">
+            <button class="start-button" onclick="startFortuneTelling()">开始算命</button>
+        </div>
+        <div class="chat-page" id="chatPage">
+            <div class="chat-container">
+                <div class="sidebar">
+                    <button class="sidebar-button" onclick="showHistoryModal()">历史记录</button>
+                    <button class="sidebar-button" onclick="showParamsModal()">参数调试</button>
+                    <button class="sidebar-button" onclick="openLocalFolder()">本地文件</button>
+                </div>
+                <div class="main-content">
+                    <div class="chat-history" id="chatHistory"></div>
+                    <div class="chat-input">
+                        <input type="text" id="userInput" placeholder="输入您的问题...">
+                        <button onclick="sendMessage()">发送</button>
+                    </div>
+                </div>
+                <div class="sidebar">
+                    <button class="sidebar-button" onclick="showModelChangeModal()">更换模型</button>
+                    <button class="sidebar-button" onclick="newConversation()">新建对话</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 历史记录模态框 -->
+    <div id="historyModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('historyModal')">&times;</span>
+            <h2>历史记录</h2>
+            <div id="historyContent"></div>
+        </div>
+    </div>
+
+    <!-- 参数调试模态框 -->
+    <div id="paramsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('paramsModal')">&times;</span>
+            <h2>参数调试</h2>
+            <label for="topK">Top K:</label>
+            <input type="number" id="topK" value="10" min="1" max="100">
+            <label for="topP">Top P:</label>
+            <input type="number" id="topP" value="0.9" min="0" max="1" step="0.1">
+            <button onclick="updateParams()">更新参数</button>
+        </div>
+    </div>
+
+    <!-- 更换模型模态框 -->
+    <div id="modelChangeModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modelChangeModal')">&times;</span>
+            <h2>更换模型</h2>
+            <select id="modelSelect">
+                <option value="glm-4">GLM-4</option>
+                <option value="minimax">MiniMax</option>
+            </select>
+            <input type="text" id="apiKey" placeholder="输入新的API密钥">
+            <button onclick="changeModel()">确认更换</button>
+        </div>
+    </div>
+
+    <script>
+        let currentModel = 'glm-4';
+        let topK = 10;
+        let topP = 0.9;
+        let conversationHistory = [];
+
+        function startFortuneTelling() {
+            document.getElementById('indexPage').style.display = 'none';
+            document.getElementById('chatPage').style.display = 'block';
+        }
+
+        function sendMessage() {
+            const userInput = document.getElementById('userInput');
+            const chatHistory = document.getElementById('chatHistory');
+            
+            if (userInput.value.trim() !== '') {
+                const userMessage = document.createElement('p');
+                userMessage.textContent = '用户: ' + userInput.value;
+                chatHistory.appendChild(userMessage);
+
+                // 发送请求到后端
+                fetch('/ask', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        question: userInput.value,
+                        top_k: topK,
+                        top_p: topP,
+                        model: currentModel,
+                        history: conversationHistory
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const aiMessage = document.createElement('p');
+                    aiMessage.textContent = 'AI: ' + data.answer;
+                    chatHistory.appendChild(aiMessage);
+                    
+                    // 更新对话历史
+                    conversationHistory.push({
+                        role: 'user',
+                        content: userInput.value
+                    });
+                    conversationHistory.push({
+                        role: 'assistant',
+                        content: data.answer
+                    });
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+
+                userInput.value = '';
+                chatHistory.scrollTop = chatHistory.scrollHeight;
+            }
+        }
+
+        function showHistoryModal() {
+            fetch('/history')
+                .then(response => response.json())
+                .then(data => {
+                    const historyContent = document.getElementById('historyContent');
+                    historyContent.innerHTML = '';
+                    data.history.forEach(item => {
+                        const historyItem = document.createElement('div');
+                        historyItem.textContent = `${item.query_time}: ${item.query}`;
+                        historyContent.appendChild(historyItem);
+                    });
+                    document.getElementById('historyModal').style.display = 'block';
+                });
+        }
+
+        function showParamsModal() {
+            document.getElementById('topK').value = topK;
+            document.getElementById('topP').value = topP;
+            document.getElementById('paramsModal').style.display = 'block';
+        }
+
+        function updateParams() {
+            topK = parseInt(document.getElementById('topK').value);
+            topP = parseFloat(document.getElementById('topP').value);
+            closeModal('paramsModal');
+        }
+
+        function openLocalFolder() {
+            fetch('/open_folder')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('本地文件夹已打开');
+                    } else {
+                        alert('打开文件夹失败');
+                    }
+                });
+        }
+
+        function showModelChangeModal() {
+            document.getElementById('modelChangeModal').style.display = 'block';
+        }
+
+        function changeModel() {
+            const newModel = document.getElementById('modelSelect').value;
+            const newApiKey = document.getElementById('apiKey').value;
+            
+            fetch('/change_model', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    model: newModel,
+                    api_key: newApiKey
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    currentModel = newModel;
+                    alert('模型已更换');
+                } else {
+                    alert('更换模型失败');
+                }
+            });
+
+            closeModal('modelChangeModal');
+        }
+
+        function newConversation() {
+            conversationHistory = [];
+            document.getElementById('chatHistory').innerHTML = '';
+            fetch('/new_conversation', {
+                method: 'POST',
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('新对话已创建');
+                } else {
+                    alert('创建新对话失败');
+                }
+            });
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // 关闭模态框的点击事件
+        window.onclick = function(event) {
+            if (event.target.className === 'modal') {
+                event.target.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
