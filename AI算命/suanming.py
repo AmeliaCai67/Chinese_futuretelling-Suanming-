@@ -24,7 +24,7 @@ MODEL_CONFIG = {
         "base_url": "https://open.bigmodel.cn/api/paas/v4/"
     },
     "abab6.5s-chat": {
-        "api_key": "YOUR_API_key",
+        "api_key": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJHcm91cE5hbWUiOiLolKHlub_nj4oiLCJVc2VyTmFtZSI6IuiUoeW5v-ePiiIsIkFjY291bnQiOiIiLCJTdWJqZWN0SUQiOiIxODEwNTMwOTYxMjcyNjA3NDgzIiwiUGhvbmUiOiIxMzEyMjQxMDE3NiIsIkdyb3VwSUQiOiIxODEwNTMwOTYxMjY4NDEzMTE0IiwiUGFnZU5hbWUiOiIiLCJNYWlsIjoiIiwiQ3JlYXRlVGltZSI6IjIwMjUtMDEtMTYgMjM6MzY6NTgiLCJUb2tlblR5cGUiOjEsImlzcyI6Im1pbmltYXgifQ.T6XBR1yAJz4BRdhbGMuk6XBBAQIGMjFqfZU6CdMHa2xK4rYcTnS8nADxEOF2KMVlGuIwI4S0cIzSthKL6nhAPbFkn6BnhyhJb7x6wNx9zoHUu_7yzADw128JoSOdDgSL2ugHkjxSP7IklxFXi7yAIZrjUa1gQD7A6LDJwcl0HBzdBq0JO4ek2JO2BhoYWiOLE__hGyfYEOD1ac5JMG3ipX6vKP1gwIvscSsBLhD4wZk4E2b0RF11Q5jnFjZTUfqvaPvyyENuGjp7Eqf_QJyOCIYXdi4lqblGf9b4bOyUKQQepH94NOrwKIGFZiGrKyaUV9moSVci5Ch31AJoRnxBUQ",
         "base_url": "https://api.minimax.chat/v1"
     }
 }
@@ -34,10 +34,20 @@ current_model = "glm-4"  # 默认为GLM模型
 
 def generate_prompt_template(question, client_prompt, history=None):
     try:
-        # Integrate all rag_content into the prompt
-        results = search_similar_records(question, r"csv\suanming_database.db")
-        rag_content = str(results)  # Convert results to string for storage
-        # Include conversation history
+        # 初始化 rag_content 为空字符串
+        rag_content = ""
+        
+        try:
+            # 尝试从本地加载模型
+            results = search_similar_records(question, r"csv\suanming_database.db")
+            rag_content = str(results)
+        except Exception as e:
+            logging.warning(f"Search similar records failed: {str(e)}")
+            # 如果检索失败,使用空的上下文继续
+            results = {}
+            rag_content = str(results)
+
+        # 构建 prompt
         if history:
             history_context = "\n".join([f"{msg['role']}: {msg['content']}" for msg in history])
             prompt_template = f"""Use the following pieces of context to answer the question at the end.
@@ -64,6 +74,8 @@ def generate_prompt_template(question, client_prompt, history=None):
 
     except Exception as e:
         logging.error(f"Error in generate_prompt_template: {str(e)}")
+        # 确保即使发生错误也返回有效值
+        rag_content = ""
         prompt_template = f"""
         Question: {question}
         Client instruction: {client_prompt}
@@ -73,8 +85,19 @@ def generate_prompt_template(question, client_prompt, history=None):
     return rag_content, prompt_template
 
 def search_similar_records(query, database_path, top_k=10):
-    # 初始化模型
-    model = SentenceTransformer('shibing624/text2vec-base-chinese')
+    try:
+        # 使用相对于 AI算命 目录的路径
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        model_path = os.path.join(current_dir, "embedding", "text2vec-base-chinese")
+        
+        if not os.path.exists(model_path):
+            logging.error(f"Model path not found: {model_path}")
+            return {}
+            
+        model = SentenceTransformer(model_path)
+    except Exception as e:
+        logging.error(f"Failed to load model: {str(e)}")
+        return {}
     
     # 清除缓存
     try:
