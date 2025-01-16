@@ -264,4 +264,4 @@ app.register_blueprint(static_bp)
 
 if __name__ == "__main__":
     # 使得应用在本地网络中可访问
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=8000, debug=True)
