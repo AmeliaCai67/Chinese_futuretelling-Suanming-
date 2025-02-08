@@ -1,0 +1,19 @@
+{
+  "glm-1": {
+    "api_key": "",
+    "base_url": "https://open.bigmodel.cn/api/paas/v4",
+    "model_name": "glm-4",
+    "name": "GLM-4",
+    "provider": "glm",
+    "type": "remote"
+  },
+  "minimax-1": {
+    "api_key": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJHcm91cE5hbWUiOiLolKHlub_nj4oiLCJVc2VyTmFtZSI6IuiUoeW5v-ePiiIsIkFjY291bnQiOiIiLCJTdWJqZWN0SUQiOiIxODEwNTMwOTYxMjcyNjA3NDgzIiwiUGhvbmUiOiIxMzEyMjQxMDE3NiIsIkdyb3VwSUQiOiIxODEwNTMwOTYxMjY4NDEzMTE0IiwiUGFnZU5hbWUiOiIiLCJNYWlsIjoiIiwiQ3JlYXRlVGltZSI6IjIwMjUtMDEtMTYgMjM6MzY6NTgiLCJUb2tlblR5cGUiOjEsImlzcyI6Im1pbmltYXgifQ.T6XBR1yAJz4BRdhbGMuk6XBBAQIGMjFqfZU6CdMHa2xK4rYcTnS8nADxEOF2KMVlGuIwI4S0cIzSthKL6nhAPbFkn6BnhyhJb7x6wNx9zoHUu_7yzADw128JoSOdDgSL2ugHkjxSP7IklxFXi7yAIZrjUa1gQD7A6LDJwcl0HBzdBq0JO4ek2JO2BhoYWiOLE__hGyfYEOD1ac5JMG3ipX6vKP1gwIvscSsBLhD4wZk4E2b0RF11Q5jnFjZTUfqvaPvyyENuGjp7Eqf_QJyOCIYXdi4lqblGf9b4bOyUKQQepH94NOrwKIGFZiGrKyaUV9moSVci5Ch31AJoRnxBUQ",
+    "base_url": "https://api.minimax.chat/v1",
+    "group_id": "1810530961268413114",
+    "model_name": "abab6.5s-chat",
+    "name": "MiniMax",
+    "provider": "minimax",
+    "type": "remote"
+  }
+}

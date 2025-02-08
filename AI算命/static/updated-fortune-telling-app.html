@@ -17,78 +17,77 @@
             display: flex;
             flex-direction: column;
             height: 100vh;
-            background-image: url('static\baguazhen.jpg'); /* 插入背景图片 */
-            background-size: cover;
-            background-position: center;
+            padding: 20px;
         }
-        .index-page {
+        .header {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            height: 100%;
-        }
-        .fortune-wheel {
-            width: 300px;
-            height: 300px;
-            margin-bottom: 20px;
-        }
-        .start-button {
-            padding: 10px 20px;
-            font-size: 24px;
-            background-color: #f3cb46;
-            color: #000;
-            border: none;
-            cursor: pointer;
-        }
-        .chat-page {
-            display: none;
-            height: 100%;
-        }
-        .chat-container {
-            display: flex;
-            height: 100%;
-        }
-        .sidebar {
-            width: 200px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-        }
-        .main-content {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
-        }
-        .chat-history {
-            flex-grow: 1;
-            overflow-y: auto;
-            border: 1px solid #d4af37;
-            margin-bottom: 20px;
             padding: 10px;
         }
-        .chat-input {
-            display: flex;
-        }
-        .chat-input input {
+        .model-selector {
             flex-grow: 1;
-            padding: 10px;
+            margin-right: 20px;
         }
-        .chat-input button {
-            padding: 10px 20px;
-            background-color: #d4af37;
-            color: #1F1F1F;
-            border: none;
-            cursor: pointer;
-        }
-        .sidebar-button {
-            margin-bottom: 10px;
-            padding: 10px;
+        .model-selector select {
+            width: 100%;
+            padding: 8px 16px;
             background-color: transparent;
             color: #d4af37;
             border: 1px solid #d4af37;
+            border-radius: 25px;
+            outline: none;
+        }
+        .settings-button {
+            padding: 8px 20px;
+            background-color: #d4af37;
+            color: #000;
+            border: none;
+            border-radius: 25px;
             cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .settings-button:hover {
+            transform: scale(1.05);
+        }
+        .chat-area {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            margin: 20px 0;
+        }
+        .chat-history {
+            flex-grow: 1;
+            border: 1px solid #d4af37;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            overflow-y: auto;
+        }
+        .input-area {
+            display: flex;
+            gap: 10px;
+        }
+        .input-area input {
+            flex-grow: 1;
+            padding: 10px 20px;
+            background-color: transparent;
+            color: #d4af37;
+            border: 1px solid #d4af37;
+            border-radius: 25px;
+            outline: none;
+        }
+        .input-area button {
+            padding: 10px 30px;
+            background-color: #d4af37;
+            color: #000;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .input-area button:hover {
+            transform: scale(1.05);
         }
         .modal {
             display: none;
@@ -98,249 +97,414 @@
             top: 0;
             width: 100%;
             height: 100%;
-            overflow: auto;
-            background-color: #1F1F1F;
+            background-color: rgba(0,0,0,0.8);
         }
         .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
+            background-color: white;
+            color: #000;
+            padding: 30px;
+            border-radius: 15px;
             width: 80%;
+            max-width: 600px;
+        }
+        .model-list {
+            margin: 20px 0;
+        }
+        .model-item {
+            border: 1px solid #d4af37;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+        .model-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .model-type {
+            padding: 5px 10px;
+            border-radius: 15px;
+            background-color: #d4af37;
+            color: white;
+        }
+        .delete-button {
+            color: #d4af37;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 20px;
+        }
+        .model-inputs input {
+            width: 100%;
+            padding: 8px 15px;
+            margin: 5px 0;
+            border: 1px solid #d4af37;
+            border-radius: 20px;
+        }
+        .type-button {
+            padding: 10px 20px;
+            margin: 10px;
+            border: 1px solid #d4af37;
+            border-radius: 20px;
+            background: white;
+            color: #d4af37;
+            cursor: pointer;
+        }
+        .type-button:hover {
+            background: #d4af37;
+            color: white;
+        }
+        .modal-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .modal-footer button {
+            padding: 8px 30px;
+        }
+        .model-config {
+            margin: 20px 0;
+        }
+        .model-config label {
+            display: block;
+            margin: 10px 0;
+        }
+        .model-config input {
+            width: 100%;
+            padding: 8px 16px;
+            margin-top: 5px;
+            background-color: transparent;
+            color: #d4af37;
+            border: 1px solid #d4af37;
+            border-radius: 25px;
+            outline: none;
+        }
+        .model-config input[type="checkbox"] {
+            margin-right: 10px;
         }
         .close {
-            color: #aaa;
             float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        .close:hover,
-        .close:focus {
-            color: #1F1F1F;
-            text-decoration: none;
             cursor: pointer;
+            font-size: 28px;
+        }
+        .message {
+            margin: 10px 0;
+            padding: 10px 15px;
+            border-radius: 15px;
+            max-width: 80%;
+        }
+        .user-message {
+            background-color: rgba(212, 175, 55, 0.1);
+            margin-left: auto;
+        }
+        .bot-message {
+            background-color: rgba(212, 175, 55, 0.05);
+            margin-right: auto;
+        }
+        * {
+            transition: all 0.3s ease;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="index-page" id="indexPage">
-            <img src="/static/baguazhen.jpg" alt="Fortune Wheel" class="fortune-wheel">
-            <button class="start-button" onclick="startFortuneTelling()">开始算命</button>
+        <div class="header">
+            <div class="model-selector">
+                <select id="modelSelect" onchange="changeModel()">
+                    <option value="local-model">本地模型</option>
+                    <option value="abab6.5s-chat">MiniMax</option>
+                    <option value="glm-4">GLM-4</option>
+                </select>
+            </div>
+            <button class="settings-button" onclick="showSettings()">设置</button>
         </div>
-        <div class="chat-page" id="chatPage">
-            <div class="chat-container">
-                <div class="sidebar">
-                    <button class="sidebar-button" onclick="showHistoryModal()">历史记录</button>
-                    <button class="sidebar-button" onclick="showParamsModal()">参数调试</button>
-                    <button class="sidebar-button" onclick="openLocalFolder()">本地文件</button>
-                </div>
-                <div class="main-content">
-                    <div class="chat-history" id="chatHistory"></div>
-                    <div class="chat-input">
-                        <input type="text" id="userInput" placeholder="输入您的问题...">
-                        <button class="start-button" onclick="sendMessage()">发送</button>
-                    </div>
-                </div>
-                <div class="sidebar">
-                    <button class="sidebar-button" onclick="showModelChangeModal()">更换模型</button>
-                    <button class="sidebar-button" onclick="newConversation()">新建对话</button>
-                </div>
+        
+        <div class="chat-area">
+            <div class="chat-history" id="chatHistory"></div>
+            <div class="input-area">
+                <input type="text" id="userInput" placeholder="输入您的问题...">
+                <button onclick="sendMessage()">提交</button>
             </div>
         </div>
     </div>
 
-    <!-- 历史记录模态框 -->
-    <div id="historyModal" class="modal">
+    <!-- 设置模态框 -->
+    <div id="settingsModal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal('historyModal')">&times;</span>
-            <h2>历史记录</h2>
-            <div id="historyContent"></div>
+            <div class="modal-header">
+                <h2>模型设置</h2>
+                <span class="close" onclick="closeSettings()">&times;</span>
+            </div>
+            <div class="model-list" id="modelList">
+                <!-- 模型列表项会通过 JavaScript 动态添加 -->
+            </div>
+            <div class="modal-footer">
+                <button class="settings-button" onclick="showAddModelDialog()">新增</button>
+                <button class="settings-button" onclick="saveSettings()">保存</button>
+            </div>
         </div>
     </div>
 
-    <!-- 参数调试模态框 -->
-    <div id="paramsModal" class="modal">
+    <!-- 新增模型对话框 -->
+    <div id="addModelDialog" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal('paramsModal')">&times;</span>
-            <h2>参数调试</h2>
-            <label for="topK">Top K:</label>
-            <input type="number" id="topK" value="10" min="1" max="100">
-            <label for="topP">Top P:</label>
-            <input type="number" id="topP" value="0.9" min="0" max="1" step="0.1">
-            <button onclick="updateParams()">更新参数</button>
-        </div>
-    </div>
-
-    <!-- 更换模型模态框 -->
-    <div id="modelChangeModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('modelChangeModal')">&times;</span>
-            <h2>更换模型</h2>
-            <select id="modelSelect">
-                <option value="glm-4">GLM-4</option>
-                <option value="minimax">MiniMax</option>
-            </select>
-            <input type="text" id="apiKey" placeholder="输入新的API密钥">
-            <button onclick="changeModel()">确认更换</button>
+            <div class="modal-header">
+                <h2>新增模型</h2>
+                <span class="close" onclick="closeAddModelDialog()">&times;</span>
+            </div>
+            <div class="model-type-selector">
+                <button onclick="selectModelType('local')" class="type-button">本地模型</button>
+                <button onclick="selectModelType('remote')" class="type-button">远程模型</button>
+            </div>
         </div>
     </div>
 
     <script>
-        let currentModel = 'glm-4';
-        let topK = 10;
-        let topP = 0.9;
-        let conversationHistory = [];
+        let modelConfigs = {};
 
-        function startFortuneTelling() {
-            document.getElementById('indexPage').style.display = 'none';
-            document.getElementById('chatPage').style.display = 'block';
+        // 加载模型配置
+        async function loadModelConfigs() {
+            try {
+                const response = await fetch('/api/models');
+                if (!response.ok) {
+                    throw new Error('Failed to load models');
+                }
+                modelConfigs = await response.json();
+                console.log('Loaded configs:', modelConfigs);
+                renderModelList();
+                updateModelSelect(); // 更新下拉列表
+            } catch (error) {
+                console.error('Error loading models:', error);
+                alert('加载模型配置失败：' + error.message);
+            }
         }
 
-        function sendMessage() {
-            const userInput = document.getElementById('userInput');
-            const chatHistory = document.getElementById('chatHistory');
+        // 更新模型选择下拉列表
+        function updateModelSelect() {
+            const select = document.getElementById('modelSelect');
+            select.innerHTML = ''; // 清空现有选项
             
-            if (userInput.value.trim() !== '') {
-                const userMessage = document.createElement('p');
-                userMessage.textContent = '用户: ' + userInput.value;
-                chatHistory.appendChild(userMessage);
+            Object.entries(modelConfigs).forEach(([id, config]) => {
+                const option = document.createElement('option');
+                option.value = id;
+                option.textContent = config.name;
+                select.appendChild(option);
+            });
+        }
 
-                // 发送请求到后端
-                fetch('/ask', {
+        // 渲染模型列表
+        function renderModelList() {
+            const modelList = document.getElementById('modelList');
+            modelList.innerHTML = Object.entries(modelConfigs).map(([id, config]) => `
+                <div class="model-item">
+                    <div class="model-header">
+                        <span class="model-type">${config.type === 'local' ? '本地模型' : '远程模型'}</span>
+                        <button class="delete-button" onclick="confirmDelete('${id}')">✕</button>
+                    </div>
+                    <div class="model-inputs">
+                        <input type="text" placeholder="模型名称" 
+                               value="${config.name}"
+                               onchange="updateModelField('${id}', 'name', this.value)">
+                        <input type="text" placeholder="URL" 
+                               value="${config.type === 'local' ? config.url : config.base_url}"
+                               onchange="updateModelField('${id}', '${config.type === 'local' ? 'url' : 'base_url'}', this.value)">
+                        ${config.type === 'remote' ? `
+                            <input type="password" placeholder="API Key" 
+                                   value="${maskApiKey(config.api_key)}"
+                                   onchange="updateModelField('${id}', 'api_key', this.value)">
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // API Key 掩码显示
+        function maskApiKey(key) {
+            if (!key) return '';
+            return '*'.repeat(key.length);
+        }
+
+        // 确认删除
+        function confirmDelete(id) {
+            const modelName = modelConfigs[id].name;
+            if (confirm(`确定要删除模型 "${modelName}" 吗？\n此操作不可恢复。`)) {
+                delete modelConfigs[id];
+                renderModelList();
+            }
+        }
+
+        // 显示新增模型对话框
+        function showAddModelDialog() {
+            document.getElementById('addModelDialog').style.display = 'block';
+        }
+
+        // 关闭新增模型对话框
+        function closeAddModelDialog() {
+            document.getElementById('addModelDialog').style.display = 'none';
+        }
+
+        // 选择模型类型（新增模型时）
+        function selectModelType(type) {
+            const id = Date.now().toString();
+            const newModel = {
+                name: type === 'local' ? '新建本地模型' : '新建远程模型',
+                type: type
+            };
+            
+            if (type === 'local') {
+                newModel.url = 'http://localhost:1234';
+                newModel.model_name = 'local-model';
+            } else {
+                newModel.base_url = '';
+                newModel.api_key = '';
+                newModel.provider = '';
+                newModel.model_name = '';
+            }
+            
+            modelConfigs[id] = newModel;
+            closeAddModelDialog();
+            renderModelList();
+        }
+
+        // 更新模型字段
+        function updateModelField(id, field, value) {
+            if (modelConfigs[id]) {
+                modelConfigs[id][field] = value;
+                console.log(`Updated ${field} for model ${id}:`, value);
+            }
+        }
+
+        // 保存设置
+        async function saveSettings() {
+            try {
+                const response = await fetch('/api/models', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({
-                        question: userInput.value,
-                        top_k: topK,
-                        top_p: topP,
-                        model: currentModel,
-                        history: conversationHistory
-                    }),
-                })
-                .then(response => response.json())
-                .then(data => {
-                    const aiMessage = document.createElement('p');
-                    aiMessage.textContent = '算命AI: ' + data.answer;
-                    chatHistory.appendChild(aiMessage);
-                    
-                    // 更新对话历史
-                    conversationHistory.push({
-                        role: 'user',
-                        content: userInput.value
-                    });
-                    conversationHistory.push({
-                        role: 'assistant',
-                        content: data.answer
-                    });
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
+                    body: JSON.stringify(modelConfigs)
                 });
-
-                userInput.value = '';
-                chatHistory.scrollTop = chatHistory.scrollHeight;
+                
+                if (!response.ok) {
+                    throw new Error('保存失败');
+                }
+                
+                const result = await response.json();
+                if (result.status === 'success') {
+                    alert('设置保存成功！');
+                    closeSettings();
+                    loadModelConfigs(); // 重新加载模型列表和下拉框
+                } else {
+                    throw new Error(result.error || '保存失败');
+                }
+            } catch (error) {
+                console.error('Error saving settings:', error);
+                alert('保存失败：' + error.message);
             }
         }
 
-        function showHistoryModal() {
-            fetch('/history')
-                .then(response => response.json())
-                .then(data => {
-                    const historyContent = document.getElementById('historyContent');
-                    historyContent.innerHTML = '';
-                    data.history.forEach(item => {
-                        const historyItem = document.createElement('div');
-                        historyItem.textContent = `${item.query_time}: ${item.query}`;
-                        historyContent.appendChild(historyItem);
-                    });
-                    document.getElementById('historyModal').style.display = 'block';
-                });
-        }
-
-        function showParamsModal() {
-            document.getElementById('topK').value = topK;
-            document.getElementById('topP').value = topP;
-            document.getElementById('paramsModal').style.display = 'block';
-        }
-
-        function updateParams() {
-            topK = parseInt(document.getElementById('topK').value);
-            topP = parseFloat(document.getElementById('topP').value);
-            closeModal('paramsModal');
-        }
-
-        function openLocalFolder() {
-            fetch('/open_folder')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert('本地文件夹已打开');
-                    } else {
-                        alert('打开文件夹失败');
-                    }
-                });
-        }
-
-        function showModelChangeModal() {
-            document.getElementById('modelChangeModal').style.display = 'block';
-        }
-
-        function changeModel() {
-            const newModel = document.getElementById('modelSelect').value;
-            const newApiKey = document.getElementById('apiKey').value;
-            
-            fetch('/change_model', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    model: newModel,
-                    api_key: newApiKey
-                }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    currentModel = newModel;
-                    alert('模型已更换');
-                } else {
-                    alert('更换模型失败');
-                }
-            });
-
-            closeModal('modelChangeModal');
-        }
-
-        function newConversation() {
-            conversationHistory = [];
-            document.getElementById('chatHistory').innerHTML = '';
-            fetch('/new_conversation', {
-                method: 'POST',
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('新对话已创建');
-                } else {
-                    alert('创建新对话失败');
-                }
-            });
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
-
-        // 关闭模态框的点击事件
-        window.onclick = function(event) {
-            if (event.target.className === 'modal') {
-                event.target.style.display = "none";
+        // 显示设置模态框
+        function showSettings() {
+            console.log('Opening settings modal'); // 调试日志
+            const modal = document.getElementById('settingsModal');
+            if (modal) {
+                modal.style.display = 'block';
+                // 加载模型配置
+                loadModelConfigs();
+            } else {
+                console.error('Settings modal not found');
             }
         }
+
+        // 关闭设置模态框
+        function closeSettings() {
+            console.log('Closing settings modal'); // 调试日志
+            const modal = document.getElementById('settingsModal');
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // 确保 DOM 加载完成后绑定事件
+        document.addEventListener('DOMContentLoaded', function() {
+            // 绑定设置按钮点击事件
+            const settingsButton = document.querySelector('.settings-button');
+            if (settingsButton) {
+                settingsButton.onclick = showSettings;
+            }
+
+            // 绑定模态框关闭按钮点击事件
+            const closeButton = document.querySelector('.modal .close');
+            if (closeButton) {
+                closeButton.onclick = closeSettings;
+            }
+
+            // 点击模态框外部区域关闭模态框
+            window.onclick = function(event) {
+                const modal = document.getElementById('settingsModal');
+                if (event.target === modal) {
+                    closeSettings();
+                }
+            }
+        });
+
+        // 更新模态框样式
+        const modalStyles = `
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 80%;
+            max-width: 600px;
+            position: relative;
+            animation: slideIn 0.3s;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #d4af37;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #b38f1d;
+        }`;
+
+        // 添加样式到页面
+        const styleSheet = document.createElement("style");
+        styleSheet.textContent = modalStyles;
+        document.head.appendChild(styleSheet);
+
+        // 页面加载时初始化
+        window.addEventListener('load', loadModelConfigs);
     </script>
 </body>
 </html>
