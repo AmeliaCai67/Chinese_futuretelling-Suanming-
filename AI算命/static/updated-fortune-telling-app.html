@@ -202,6 +202,28 @@
             background-color: rgba(212, 175, 55, 0.05);
             margin-right: auto;
         }
+        .message-time {
+            font-size: 0.8em;
+            color: #888;
+            margin-top: 5px;
+            text-align: right;
+        }
+        .message-status {
+            font-size: 0.9em;
+            color: #d4af37;
+            margin-top: 5px;
+            text-align: right;
+        }
+        [class$="-message"] {
+            padding: 12px 18px;
+            margin: 8px 0;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            animation: messageAppear 0.3s ease-out;
+        }
+        @keyframes messageAppear {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
         * {
             transition: all 0.3s ease;
         }
@@ -505,6 +527,78 @@
 
         // 页面加载时初始化
         window.addEventListener('load', loadModelConfigs);
+
+        async function sendMessage() {
+            const userInput = document.getElementById('userInput');
+            const question = userInput.value.trim();
+            if (!question) return;
+
+            userInput.value = '';
+            addMessage('user', question);
+            const loadingId = addMessage('bot', '掐指计算中……', true);
+
+            try {
+                const response = await fetch('/api/ask', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        question: question,
+                        model_id: document.getElementById('modelSelect').value
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    updateMessage(
+                        loadingId, 
+                        data.answer.content, 
+                        `${data.status.text} (代码:${data.status.code})`
+                    );
+                } else {
+                    updateMessage(
+                        loadingId, 
+                        '天机难测，请再试一次',
+                        `错误: ${data.error.message} (代码:${data.error.code})`
+                    );
+                }
+            } catch (error) {
+                updateMessage(
+                    loadingId, 
+                    '连接天地灵气失败',
+                    `网络错误: ${error.message}`
+                );
+            }
+        }
+
+        // 添加消息到聊天历史（返回消息ID用于后续更新）
+        function addMessage(role, content, isPending = false) {
+            const chatHistory = document.getElementById('chatHistory');
+            const messageId = 'msg-' + Date.now();
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${role}-message`;
+            messageDiv.id = messageId;
+            messageDiv.innerHTML = `
+                <div class="message-content">${content}</div>
+                ${isPending ? '<div class="message-status">⏳</div>' : ''}
+                <div class="message-time">${new Date().toLocaleTimeString()}</div>
+            `;
+            
+            chatHistory.appendChild(messageDiv);
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+            return messageId;
+        }
+
+        // 更新已有消息
+        function updateMessage(id, content, status) {
+            const messageDiv = document.getElementById(id);
+            if (messageDiv) {
+                messageDiv.querySelector('.message-content').textContent = content;
+                messageDiv.querySelector('.message-status').textContent = status || '✅';
+                messageDiv.querySelector('.message-time').textContent = new Date().toLocaleTimeString();
+            }
+        }
     </script>
 </body>
 </html>

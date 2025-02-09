@@ -383,14 +383,15 @@ def update_models():
         for model_id, config in new_config.items():
             if not isinstance(config, dict):
                 return jsonify({"error": f"模型 {model_id} 配置无效"}), 400
-                
             required_fields = ["name", "type", "model_name"]
+            
             if config["type"] == "local":
                 required_fields.append("url")
-                # 强制本地模型的 model_name 必须等于 name
-                if config.get("name") != config.get("model_name"):
+                # 移除名称一致性校验，仅保留必要字段验证
+                # 添加模型名称存在性校验
+                if not config.get("model_name"):
                     return jsonify({
-                        "error": f"本地模型 {model_id} 的 name 和 model_name 必须一致",
+                        "error": f"本地模型 {model_id} 必须提供 model_name 字段",
                         "invalid_field": "model_name"
                     }), 400
                     
@@ -452,18 +453,32 @@ def ask():
         save_query_to_database(question, client_prompt, rag_content, answer)
 
         response_data = {
-            'success': True, 
-            'answer': answer, 
-            'status': f"滴答，你的答案已送达！耗时 {time.time() - start_time:.2f} 秒"
+            "success": True,
+            "answer": {
+                "role": "assistant",
+                "content": answer,
+                "timestamp": datetime.now().isoformat()
+            },
+            "status": {
+                "text": f"耗时 {time.time() - start_time:.2f} 秒",
+                "code": 200
+            }
         }
         return jsonify(response_data)
         
     except Exception as e:
         logging.error(f"Error in ask: {str(e)}", exc_info=True)
         error_response = {
-            'success': False, 
-            'error': str(e), 
-            'status': '哎呀，失败了呢~'
+            "success": False,
+            "error": {
+                "code": 500,
+                "message": str(e),
+                "timestamp": datetime.now().isoformat()
+            },
+            "status": {
+                "text": "哎呀，失败了呢~",
+                "code": 500
+            }
         }
         return jsonify(error_response), 500
 

@@ -15,5 +15,11 @@
     "name": "MiniMax",
     "provider": "minimax",
     "type": "remote"
+  },
+  "1739073646318": {
+    "name": "deepseek-r1-distill-llama-8b",
+    "type": "local",
+    "url": "http://localhost:1234",
+    "model_name": "local-model"
   }
 }
