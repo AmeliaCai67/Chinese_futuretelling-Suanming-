@@ -56,7 +56,7 @@
 #### 1. 克隆项目
 
 ```bash
-git clone https://github.com/yourusername/chinese-fortune-telling-system.git
+git clone https://github.com/AmeliaCai67/Chinese_futuretelling-Suanming-.git
 cd chinese-fortune-telling-system
 ```
 
