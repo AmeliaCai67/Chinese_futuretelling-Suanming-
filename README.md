@@ -79,7 +79,7 @@ pip install -r requirements.txt
 python AI算命/suanming.py
 ```
 
-然后访问[text](http://127.0.0.1:8000)即可开始。
+然后访问[http://127.0.0.1:8000](http://127.0.0.1:8000)即可开始。
 
 ### 配置说明
 
