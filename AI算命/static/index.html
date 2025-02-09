@@ -8,14 +8,29 @@
         body, html {
             margin: 0;
             padding: 0;
-            height: 100%;
+            min-height: 100vh;
+            width: 100%;
             font-family: "SimSun", "STSong", serif;
-            background-color: #000;
+            background: url('./static/baguazhen.jpg') center/cover no-repeat;
             display: flex;
             justify-content: center;
             align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        body::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1;
         }
         .start-button {
+            position: relative;
+            z-index: 2;
             padding: 20px 60px;
             font-size: 24px;
             background-color: #d4af37;
@@ -24,6 +39,7 @@
             border-radius: 50px;
             cursor: pointer;
             transition: transform 0.2s;
+            box-shadow: 0 0 20px rgba(212,175,55,0.5);
         }
         .start-button:hover {
             transform: scale(1.05);

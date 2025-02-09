@@ -21,7 +21,7 @@ MODEL_CONFIG = {
         "base_url": "https://open.bigmodel.cn/api/paas/v4/"
     },
     "abab6.5s-chat": {
-        "api_key": "iOiLolKHlub_nj4oiLCJVc2VyTmFtZSI6IuiUoeW5v-ePiiIsIkFjY291bnQiOiIiLCJTdWJqZWN0SUQiOiIxODEwNTMwOTYxMjcyNjA3NDgzIiwiUGhvbmUiOiIxMzEyMjQxMDE3NiIsIkdyb3VwSUQiOiIxODEwNTMwOTYxMjY4NDEzMTE0IiwiUGFnZU5hbWUiOiIiLCJNYWlsIjoiIiwiQ3JlYXRlVGltZSI6IjIwMjUtMDItMDMgMTI6MTY6MzMiLCJUb2tlblR5cGUiOjEsImlzcyI6Im1pbmltYXgifQ.MVKluuSS5qgHbZt2ijTr5rtcJaUC-cXN0Mh090XK2d8UtofXgmU8YND3cduinlVpYFDAoDTI2Esv1tzsWAx_7XStI-1-yWTTqNhh2sIc9a844_cRzNdOIaQIF3UjgK5cPQ_yZPvvjCGqvE8imhpRqHtv8wkVZXBamIsyElEspXJuT0MT6YSILDi4HUJ7azxJugeSnh6jsFKQzuKcF21ceO7AshrktMKKK3VCy3WngrRwh9N34WMisNH0Lwk-qDW-Sj0JTh5uQp0TIJoLCFrsUzTyo3s946La3C15ePogA1Es_qFxKZlxuDXyraMo_FDRjg9_Dmfl1_RoI40lEieE3g",  # 你的 MiniMax API key
+        "api_key": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJHcm91cE5hbWUiOiLolKHlub_nj4oiLCJVc2VyTmFtZSI6IuiUoeW5v-ePiiIsIkFjY291bnQiOiIiLCJTdWJqZWN0SUQiOiIxODEwNTMwOTYxMjcyNjA3NDgzIiwiUGhvbmUiOiIxMzEyMjQxMDE3NiIsIkdyb3VwSUQiOiIxODEwNTMwOTYxMjY4NDEzMTE0IiwiUGFnZU5hbWUiOiIiLCJNYWlsIjoiIiwiQ3JlYXRlVGltZSI6IjIwMjUtMDEtMTYgMjM6MzY6NTgiLCJUb2tlblR5cGUiOjEsImlzcyI6Im1pbmltYXgifQ.T6XBR1yAJz4BRdhbGMuk6XBBAQIGMjFqfZU6CdMHa2xK4rYcTnS8nADxEOF2KMVlGuIwI4S0cIzSthKL6nhAPbFkn6BnhyhJb7x6wNx9zoHUu_7yzADw128JoSOdDgSL2ugHkjxSP7IklxFXi7yAIZrjUa1gQD7A6LDJwcl0HBzdBq0JO4ek2JO2BhoYWiOLE__hGyfYEOD1ac5JMG3ipX6vKP1gwIvscSsBLhD4wZk4E2b0RF11Q5jnFjZTUfqvaPvyyENuGjp7Eqf_QJyOCIYXdi4lqblGf9b4bOyUKQQepH94NOrwKIGFZiGrKyaUV9moSVci5Ch31AJoRnxBUQ",  # 你的 MiniMax API key
         "base_url": "https://api.minimax.chat/v1"
     },
     "local-model": {
@@ -342,7 +342,7 @@ def test_ask():
     ]
     
     # 测试不同的模型
-    test_models = ["local-model"]
+    test_models = ["abab6.5s-chat","local-model"]
     
     for model in test_models:
         print(f"\n测试模型: {model}")

@@ -35,7 +35,7 @@ CONFIG_PATH = './config/model_config.json'
 def generate_prompt_template(question, client_prompt, history=None):
     try:
         # 获取当前日期时间
-        current_time = datetime.datetime.now()
+        current_time = datetime.now()
         chinese_weekday = ["一", "二", "三", "四", "五", "六", "日"][current_time.weekday()]
         
         # 获取农历日期
@@ -165,12 +165,12 @@ def search_similar_records(query, database_path, top_k=10):
 
 
 def init_res_db():
+    """初始化结果数据库，创建固定表结构"""
     conn = sqlite3.connect('res_database.db')
     c = conn.cursor()
     
-    # Create a new table for queries with a timestamp-based name
-    table_name = f"queries_{int(time.time())}"
-    c.execute(f'''CREATE TABLE {table_name}
+    # 创建固定名称的查询表
+    c.execute('''CREATE TABLE IF NOT EXISTS queries
                  (query_id INTEGER PRIMARY KEY AUTOINCREMENT,
                   query_time DATETIME,
                   query TEXT,
@@ -180,20 +180,18 @@ def init_res_db():
     
     conn.commit()
     conn.close()
-    
-    return table_name
 
-# Global variable to store the current table name
-current_table_name = init_res_db()
+# 初始化数据库（应用启动时执行）
+init_res_db()
 
 def save_query_to_database(query, client_prompt, rag_content, response):
     conn = sqlite3.connect('res_database.db')
     c = conn.cursor()
     
-    c.execute(f'''INSERT INTO {current_table_name}
+    c.execute('''INSERT INTO queries
                   (query_time, query, client_prompt, rag_content, response)
                   VALUES (?, ?, ?, ?, ?)''',
-              (time.strftime('%Y-%m-%d %H:%M:%S'), query, client_prompt, rag_content, response))
+              (datetime.now().strftime('%Y-%m-%d %H:%M:%S'), query, client_prompt, rag_content, response))
     
     conn.commit()
     conn.close()
@@ -485,8 +483,6 @@ def ask():
 
 @app.route('/new_conversation', methods=['POST'])
 def new_conversation():
-    global current_table_name
-    current_table_name = init_res_db()
     return jsonify({"success": True})
 
 @app.route('/chat')

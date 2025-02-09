@@ -32,11 +32,16 @@
         .model-selector select {
             width: 100%;
             padding: 8px 16px;
-            background-color: transparent;
+            background-color: rgba(0,0,0,0.3);
             color: #d4af37;
             border: 1px solid #d4af37;
             border-radius: 25px;
             outline: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23d4af37'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
         }
         .settings-button {
             padding: 8px 20px;
@@ -77,6 +82,10 @@
             border-radius: 25px;
             outline: none;
         }
+        .input-area input:focus {
+            border-color: #d4af37;
+            box-shadow: 0 0 8px rgba(212,175,55,0.3);
+        }
         .input-area button {
             padding: 10px 30px;
             background-color: #d4af37;
@@ -100,12 +109,13 @@
             background-color: rgba(0,0,0,0.8);
         }
         .modal-content {
-            background-color: white;
-            color: #000;
+            background-color: #1a1a1a;
+            color: #d4af37;
             padding: 30px;
             border-radius: 15px;
             width: 80%;
             max-width: 600px;
+            border: 1px solid #d4af37;
         }
         .model-list {
             margin: 20px 0;
@@ -136,11 +146,12 @@
             font-size: 20px;
         }
         .model-inputs input {
-            width: 100%;
+            width: calc(100% - 30px); /* 留出边距 */
             padding: 8px 15px;
             margin: 5px 0;
             border: 1px solid #d4af37;
             border-radius: 20px;
+            box-sizing: border-box; /* 确保宽度包含padding */
         }
         .type-button {
             padding: 10px 20px;
@@ -214,6 +225,19 @@
             margin-top: 5px;
             text-align: right;
         }
+        .message-status[data-status="loading"]::after {
+            content: '';
+            display: inline-block;
+            width: 1em;
+            height: 1em;
+            border: 2px solid #d4af37;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
         [class$="-message"] {
             padding: 12px 18px;
             margin: 8px 0;
@@ -226,6 +250,13 @@
         }
         * {
             transition: all 0.3s ease;
+        }
+        .message-content {
+            line-height: 1.5;
+            white-space: pre-wrap; /* 保留换行符 */
+            word-break: break-word; /* 自动换行 */
+            font-size: 16px;
+            margin-bottom: 5px;
         }
     </style>
 </head>
